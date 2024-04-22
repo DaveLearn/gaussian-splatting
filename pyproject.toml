@@ -1,0 +1,61 @@
+[tool.poetry]
+name = "gaussian_splatting"
+version = "0.1.0"
+description = "3D Gaussian Splatting for Real-Time Radiance Field Rendering"
+authors = ["graphdeco-inria"]
+readme = "README.md"
+
+package-mode = false
+#packages = [
+#    { include = "gaussian_splatting" from "*.py" }
+#]
+
+
+[tool.poetry.dependencies]
+python = "~3.11"
+
+# Common torch deps
+torch = {version = "^2.2.1+cu118", python = "~3.11", source = "pytorch-gpu-src", markers = "sys_platform == 'linux'"}
+torchvision = {version = "^0.17.1+cu118", python = "~3.11", source = "pytorch-gpu-src", markers = "sys_platform == 'linux'"}
+torchaudio = {version = "^2.2.1+cu118", python = "~3.11", source = "pytorch-gpu-src", markers = "sys_platform == 'linux'"}
+
+# install with 
+# pip install --no-isolated-build git+https://github.com/graphdeco-inria/diff-gaussian-rasterization.git@59f5f77e3ddbac3ed9db93ec2cfe99ed6c5d121d#egg=diff-gaussian-rasterization
+#diff-gaussian-rasterization = { git = "https://github.com/graphdeco-inria/diff-gaussian-rasterization.git",  rev = "59f5f77e3ddbac3ed9db93ec2cfe99ed6c5d121d" }
+# install with
+# pip install --no-build-isolation git+https://github.com/camenduru/simple-knn@44f764299fa305faf6ec5ebd99939e0508331503#egg=simple-knn
+#simple-knn = { git = "https://github.com/camenduru/simple-knn",  rev = "44f764299fa305faf6ec5ebd99939e0508331503" }
+tqdm = "^4.66.2"
+
+
+
+[[tool.poetry.source]]
+name = "pytorch-gpu-src"
+url = "https://download.pytorch.org/whl/cu118"
+priority = "explicit"
+
+
+[tool.poetry.group.dev.dependencies]
+matplotlib = "^3.7.2"
+opencv-python = "^4.8.0.74"
+pyright = "^1.1.320"
+black = "^23.7.0"
+poethepoet = "^0.21.1"
+ipykernel = "^6.25.0"
+ipywidgets = "^8.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pyright]
+include = ["src", "demo"]
+
+
+[tool.poe.tasks]
+lint = "black src demo"
+typecheck = "pyright"
+check = ["lint", "typecheck"]
+
+[tool.black]
+target-version = ["py310"]
